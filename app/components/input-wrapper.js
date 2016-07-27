@@ -1,0 +1,1 @@
+export { default } from 'ember-cli-simple-validator/components/input-wrapper';

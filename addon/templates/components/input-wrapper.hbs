@@ -1,0 +1,10 @@
+<div class="field-group">
+  {{yield}}
+
+  {{#if (eq valid false)}}
+    <span class="error-msg">
+      {{errorMessage}}
+    </span>
+  {{/if}}
+
+</div>

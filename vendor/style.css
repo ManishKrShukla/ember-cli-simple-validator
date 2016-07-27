@@ -1,0 +1,11 @@
+.show {
+  display: inline-block !important;
+}
+
+.error-msg {
+  display: inline-block !important;
+}
+
+.hide-message {
+  display: none !important;
+}
