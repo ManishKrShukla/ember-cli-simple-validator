@@ -32,7 +32,12 @@ function attrs(mixin) {
 function run(value, options, context) {
   context.notifyPropertyChange("valid");
 
-  let rule = context.get('rule');
+  if (context.get('_index') === -1) {
+    let index = _.findIndex(context.get('validations'), {'key': context.get('key')});
+    context.set('_index', index);
+  }
+
+  let rule = context.get('validations.' + context.get('_index') + ".rule");
 
   if (rule) {
     if (rule instanceof RegExp) {
@@ -40,7 +45,6 @@ function run(value, options, context) {
     }
 
     if (rule instanceof Function) {
-      return rule()();
     }
 
     if (typeof value === "boolean") {
@@ -59,9 +63,11 @@ var ValidationMixin = Ember.Mixin.create({
   valid: Ember.computed(function() {
     var self = this;
     var result = true;
+
     attrs(this).forEach(function(attr) {
       result = self.get(attr) && result;
     });
+
     return result;
   }),
   each: Ember.observer("model.@each.isDone", function() {
@@ -90,7 +96,9 @@ var validate = (...args) => {
 
   var computedProperty = Ember.computed(function() {
     var value = this.getWithDefault(args[0], '');
-    return run(value, options, this);
+    let validity = run(value, options, this);
+
+    return validity;
   });
 
   return computedProperty.property.apply(computedProperty, args);
