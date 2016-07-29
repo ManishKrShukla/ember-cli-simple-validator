@@ -53,6 +53,8 @@ function run(value, options, context) {
   } else {
     if (typeof value === "string") {
       return value.trim().length > 0;
+    } else if (typeof value === "number") {
+      return value !== -1;
     }
   }
 
